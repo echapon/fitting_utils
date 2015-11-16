@@ -68,7 +68,7 @@ using namespace RooFit;
 using namespace RooStats;
 pair<double, double> ConfidencInterval(float, RooRealVar *fnll, RooDataSet *data, RooAbsPdf *pdf);
 //
-void fitUpsilonYields(int ChooseSample =6, 
+void fitUpsilonYields(int ChooseSample =1, 
 		      int bkgModel=3, 
 		      int fsr=1,
 		      int useRef =2,//1: data-driven, 0: none fixed, 2: FSR from MC(standard case in 15-001)
@@ -101,7 +101,7 @@ void fitUpsilonYields(int ChooseSample =6,
   if(doPt==0 && doRap==0) doCent=1; 
   //make the workspace where the job will be contained.
   makeWorkspace(*_ws,ChooseSample, muonEtaMin, muonEtaMax, muonPtCut1,muonPtCut2, upsRapStart, upsRapEnd, upsPtStart, upsPtEnd,upsCentralityStart,upsCentralityEnd);
-  RooDataSet* data0_fit =(RooDataSet*) _ws::data; // Use the name space prefix operator to access the workspace contents
+  RooDataSet* data0_fit =(RooDataSet*) _ws->data(); // Use the name space prefix operator to access the workspace contents
   // data0_fit->Print(); // to check it worked.
   buildModel(*_ws,ChooseFitParams,ChooseSample,whatBin,signalModel,bkgModel,doRap,doPt,doCent,useRef,muonPtCut1,fsr); // builds the pdf and imports it to the rooworkspace
   // _ws->Print(); //still checkin it worked.
@@ -154,7 +154,7 @@ pair<double, double> ConfidencInterval(float CI, RooRealVar *fnll, RooDataSet *d
 	TLatex latexCI;
 	latexCI.SetNDC();
 	latexCI.SetTextSize(0.035);
-	latexCI.DrawLatex(0.5,1.-0.05*2,Form("R_{#frac{3S}{1S}} %d % C.I.",ci));
+	latexCI.DrawLatex(0.5,1.-0.05*2,Form("R_{#frac{3S}{1S}} %d %% C.I.",ci));
 	latexCI.DrawLatex(0.5,1.-0.05*3,Form("Upper limit: %f",interval->UpperLimit(*fnll)));
 	TString intrvlName = fnll->GetTitle();
 		// print out the iterval on the Parameter of Interest
