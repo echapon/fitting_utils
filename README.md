@@ -1,2 +1,2 @@
-# HIN-15-001
-Repository for codes used in HIN-15-001
+# fitting_utils
+Utilities related to fitting onia (from HIN-15-001)
