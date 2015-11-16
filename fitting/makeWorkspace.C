@@ -1,3 +1,4 @@
+using namespace RooFit;
 
 void makeWorkspace(RooWorkspace& ws, int ChooseSample,float muonEtaMin, float muonEtaMax, float muonPtMin, float muonPtMax, float upsRapMin, float upsRapMax, float upsPtMin,float upsPtMax, int upsCentralityStart, int upsCentralityEnd ){
   double mass_l =  7.0;
@@ -7,65 +8,11 @@ void makeWorkspace(RooWorkspace& ws, int ChooseSample,float muonEtaMin, float mu
   std::string finput;
   switch (ChooseSample) 
     {
-    case 1: // pp @ 7TeV - dimuon0-v1
-      finput   = "../dimuonTree_upsiMiniTree_pp7tev_dimu0v1_Runa_trigBit1_allTriggers0_pt4.root";
+    case 1: // test
+      finput   = "/afs/cern.ch/user/e/echapon/workspace/public/RunPrep2015/fitting_utils/dimuonTree_MCtest_upsi1S_5TeV_3.8T_RunMCtest_trigBit2_allTriggers1.root";
       mass_l = 8.5;
       mass_h = 11.5;
       binw=0.05;
-      break;
-    case 2://pp @ 7TeV - non dimuon0-v1 (GG)
-      finput   = "../dimuonTree_upsiMiniTree_pp7tev_glbglb_Runa_trigBit1_allTriggers0_pt4.root";
-      mass_l = 8.5;
-      mass_h = 11.5;
-      binw=0.05;
-      break;
-    case 3://PbPb @ 2.76TeV pp reco trk-trk
-      // finput   = "../dimuonTree_upsiMiniTree_aa276tev_50100ppreco__Runa_trigBit1_allTriggers0_pt4.root";
-      // break;
-      finput   = "../dimuonTree_upsiMiniTree_aa276tevC50100_ppofficial_trktrk_ptmu4_Runa_trigBit1_allTriggers0.root";
-      break;
-    case 4://PbPb @ 2.76TeV pp reco glbglb
-      finput   = "../dimuonTree_upsiMiniTree_aa276tev_50100ppreco_glbglb_Runa_trigBit1_allTriggers0_pt4.root";
-      break;
-    case 5://PbPb @ 2.76TeV Zhen's tree glbglb
-      //finput   = "../dimuonTree_upsiMiniTree_AA276tevC0100_regit_ptmu4_Run210498-211631_trigBit1_allTriggers0.root";
-      finput   = "../dimuonTree_HI2011_fulldataset_trkRot.root";
-      break;
-    case 6://PbPb @ 2.76TeV regit
-      gROOT->LoadMacro("bkgTable_PbPb.h");
-      if(muonPtMin<3.7){ gROOT->LoadMacro("bkgTable_PbPb_loose.h");}
-      if(muonPtMin>3.7){ gROOT->LoadMacro("bkgTable_PbPb_tight.h");}
-      // finput   = "../dimuonTree_upsiMiniTree_aa276tev_regitreco_glbglb_Runa_trigBit1_allTriggers0_pt4.root"; // cent 0-40 "cm" but doesnt have all the muons!
-      // finput = "../dimuonTree_upsiMiniTree_AA2p76tev_ptmu3_july09_Run2011-2011_trigBit1_allTriggers0.root";// cent0-40 "td"
-      // finput = "../dimuonTree_upsiMiniTree_AA276tevC0100_regit_ptmu4_Run210498-211631_trigBit1_allTriggers0.root"; // cent0-40 "nf"
-       finput = "../dimuonTree_upsiMiniTree_AA2p76tev_ptmuSpecial_nov25_2013_trigBit1_allTriggers1_testNoCut.root"; // no cuts , so it has all the muons.
-       // finput = "../dimuonTree_upsiMiniTree_AA2p76tev_WithIDCuts_RunHIN-15-001_trigBit1_allTriggers0.root";//bold as can be : my tree!
-      break;
-    case 7://pp @ 2.76TeV
-      gROOT->LoadMacro("bkgTable_pp.h");
-      if(muonPtMin<3.7){ gROOT->LoadMacro("bkgTable_pp_loose.h");}
-      if(muonPtMin>3.7){ gROOT->LoadMacro("bkgTable_pp_tight.h");}
-      // finput   = "../dimuonTree_upsiMiniTree_pp276tev_5p41_Run211739-211831_trigBit1_allTriggers0_pt4.root"; //trk muons!
-      //      finput   = "../dimuonTree_upsiMiniTree_pp276tev_5p41_ptmu2_Run211739-211831_GlbGlb_trigBit1_allTriggers0.root"; // Glb muons, all above 2!
-      ///finput = "../upsiMiniTree_ppData_QQtrigbit1_Trig_analysisOK_noSingleMu.root"; // new tree (2014, I did it...and there are nore events !?)
-     
-  	//finput   = "../dimuonTree_upsiMiniTree_pp276tev_5p41_ptmu2_Run211739-211831_GlbGlb_trigBit1_allTriggers0.root";} // Glb muons, all above 2 GeV, HLT_PAL1DoubleMuOpen
-  	//finput = "../dimuonTree_upsiMiniTree_pp276tev_5p41_ptmu3_Run211739-211831_trigBit2_allTriggers0_testNoCut.root"; }// HLT_PAL1DoubleMu0HighQ triggered events
-      //finput = "../upsiMiniTree_ppData_GLBGLB_QQtrigbit2_Trig_analysisOK_20140729_cuts10-006.root"; //HLT_PAL1DoubleMu0_HighQ triggered events AND GlbGlb muons pairs matched to it!
-      	finput ="../dimuonTree_upsiMiniTree_pp2p76tev_noIDVars_GlbGlb_RunHIN-15-001_trigBit2_allTriggers0.root";
-      // if(isPA) { finput = "../dimuonTree_upsiMiniTree_pA5tev_18p4nb__Run210498-211256_trigBit1_allTriggers0_pt4.root";} //// pPb
-      break;
-    case 8:
-      // finput = "../upsiMiniTree_pythia1S_QQtrigbit1_Trig_analysisOK_20140729_cuts10-006.root";
-      finput = "~/Project/ups2013/upsiMiniTree_Pyquen1S_QQtrigbit1_Trig_Unfolding_postCut_deltaRmatched_withCentrality.root";
-      mass_l = 8.;
-      mass_h = 10.5;
-      binw=0.05;
-      break;
-    case 9:
-      gROOT->LoadMacro("bkgTable_pp.h");
-      finput = "../dimuonTree_upsiMiniTree_pA5tev_18p4nb__Run210498-211256_trigBit1_allTriggers0_pt4.root";
-      isPA=true;
       break;
     default:
       cout<<"You don't know what you are doing! Pick one of the available datasets in the choseSampleCases[] array"<<endl;
@@ -83,7 +30,7 @@ void makeWorkspace(RooWorkspace& ws, int ChooseSample,float muonEtaMin, float mu
   RooRealVar* upsRapidity= new RooRealVar("upsRapidity",  "upsRapidity",-2.4, 2.4);
   RooRealVar* vProb      = new RooRealVar("vProb",  "vProb"  ,0.01,1.00);
   RooRealVar* QQsign     = new RooRealVar("QQsign",  "QQsign"  ,-1,5);
-  RooRealVar* Centrality = new RooRealVar("Centrality","Centrality",0,100);
+  RooRealVar* Centrality = new RooRealVar("Centrality","Centrality",0,200);
   RooRealVar* muPlusPt   = new RooRealVar("muPlusPt","muPlusPt",muonPtMin,1000);
   RooRealVar* muMinusPt  = new RooRealVar("muMinusPt","muMinusPt",muonPtMin,1000);
   RooRealVar* muPlusEta  = new RooRealVar("muPlusEta","muPlusEta",  muonEtaMin,muonEtaMax);

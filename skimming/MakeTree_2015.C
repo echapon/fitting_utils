@@ -55,28 +55,28 @@ n --> 2^n -1
  */
 
 
-void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-211831_GlbGlb_woPileUpRej_allPV.root",
+void MakeTree_2015(const char* inputOniaTree = "/afs/cern.ch/user/e/echapon/workspace/public/RunPrep2015/oniatree_upsi1S_5TeV_3.8T.root",
 		   //miniUpsilon_Histos_Runs_210498-211631_HFvars_paapJune28.root",
 		   //  const char* runNumber = "211739-211831",
 		   //  const char* runNumber = "210498-211631",// whole pA run, with wrong alignment
 		   //  const char* runNumber = "gt210658-211631", 
-		   const char* runNumber = "HIN-15-001", 
+		   const char* runNumber = "MCtest", 
 		   //const char* runNumber = "a",
 		   float newVtxProbCut   = 0.01,// default in the input tree is already 0.01
 		   float ptcut           = 0., // single muon cut pt
 		   int nTriggerBit       = 2, 
 		   // const char* dataSource= "upsiMiniTree_pp276tev_5p41_ptmu4_woPileup_june27",
 		   //   const char* dataSource= "upsiMiniTree_pA5tev_ptmu4_octb15_chunk1_runGT210658",
-		   const char* dataSource= "upsiMiniTree_pp2p76tev_noIDVars_GlbGlb",
+		   const char* dataSource= "MCtest_upsi1S_5TeV_3.8T",
 		   // const char* dataSource= "upsiMiniTree_pp7tev_dimu0v1_ptmu4",
 		   //   const char* dataSource= "upsiMiniTree_aa276tevC50100_ppofficial_trktrk_ptmu4",
 		   bool isAArereco       = false,// only for newly processed AA; old tree is with triger v1,v2 included
-		   bool bAllTriggers     = false,
+		   bool bAllTriggers     = true,
 		   bool addExtraCentrality = true,
 		   bool excludeWrongAlign_pa = false
 		   )
 {
-  gROOT->Macro("setTDRStyle_modified.C+");
+  // gROOT->Macro("setTDRStyle_modified.C+");
  
   float mass_min = 7.0; 
   float mass_max = 14.0;
@@ -88,7 +88,7 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
   Long64_t nentries = t->GetEntries();
   cout<<"Got the tree!"<<endl;
   cout << nentries << endl;
-  const int NMAX=1000000;
+  const int NMAX=7;
   UInt_t eventNb;
   UInt_t runNb;
   Int_t Centrality;
@@ -109,7 +109,7 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
   Float_t Reco_QQ_VtxProb[NMAX];
   float Reco_QQ_dca[NMAX]; // new float, unused in upsilon
   Int_t Reco_QQ_trig[NMAX];
-  Float_t zVtx;
+  Float_t zVtx[NMAX];
 
   int Reco_QQ_mupl_nTrkHits[NMAX];
   float Reco_QQ_mupl_normChi2_inner[NMAX];
@@ -196,9 +196,9 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
 
   // track extra stuff
   const int NTRKMAX=100000000;
-  int Reco_trk_size=0;
-  TClonesArray *Reco_trk_vtx = 0;
-  TClonesArray *Reco_trk_4mom = 0;
+  // int Reco_trk_size=0;
+  // TClonesArray *Reco_trk_vtx = 0;
+  // TClonesArray *Reco_trk_4mom = 0;
   float trkPt[NTRKMAX];
   float trkEta[NTRKMAX];
   float trkPhi[NTRKMAX];
@@ -287,9 +287,9 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
   TBranch *b_SumET_ZDCminus; //!
 
   //------------------------------
-  TBranch *b_Reco_trk_size; //! 
-  TBranch *b_Reco_trk_4mom; //!
-  TBranch *b_Reco_trk_vtx;  //!
+  // TBranch *b_Reco_trk_size; //! 
+  // TBranch *b_Reco_trk_4mom; //!
+  // TBranch *b_Reco_trk_vtx;  //!
 
   /// new tree variables
   Int_t _mupl_nTrkHits;           
@@ -346,7 +346,7 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
   t->SetBranchAddress("Reco_QQ_mumi_4mom", &Reco_QQ_mumi_4mom, &b_Reco_QQ_mumi_4mom);
   
   t->SetBranchAddress("Reco_mu_size",  &Reco_mu_size,   &b_Reco_mu_size);
-  t->SetBranchAddress("Reco_mu_type",  &Reco_mu_type,   &b_Reco_mu_type);
+  t->SetBranchAddress("Reco_mu_type",  Reco_mu_type,   &b_Reco_mu_type);
   t->SetBranchAddress("Reco_mu_charge",&Reco_mu_charge, &b_Reco_mu_charge);
   t->SetBranchAddress("Reco_mu_4mom",  &Reco_mu_4mom,   &b_Reco_mu_4mom);
 
@@ -358,7 +358,7 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
   t->SetBranchAddress("Reco_QQ_NtrkPt03",  &Reco_QQ_NtrkPt03, &b_Reco_QQ_NtrkPt03);
   t->SetBranchAddress("Reco_QQ_NtrkPt02",  &Reco_QQ_NtrkPt02, &b_Reco_QQ_NtrkPt02);
   // additional selection
-  //id variables
+  // id variables
   t->SetBranchAddress("Reco_QQ_mupl_nTrkHits", &Reco_QQ_mupl_nTrkHits, &b_Reco_QQ_mupl_nTrkHits);
   t->SetBranchAddress("Reco_QQ_mupl_normChi2_inner", &Reco_QQ_mupl_normChi2_inner, &b_Reco_QQ_mupl_normChi2_inner);
   t->SetBranchAddress("Reco_QQ_mupl_normChi2_global", &Reco_QQ_mupl_normChi2_global, &b_Reco_QQ_mupl_normChi2_global);
@@ -421,9 +421,9 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
   t->SetBranchAddress("SumET_ZDCminus",   &SumET_ZDCminus,    &b_SumET_ZDCminus);
   
   // extra track variable  
-  t->SetBranchAddress("Reco_trk_size",  &Reco_trk_size,   &b_Reco_trk_size);
-  t->SetBranchAddress("Reco_trk_4mom",  &Reco_trk_4mom,   &b_Reco_trk_4mom);
-  t->SetBranchAddress("Reco_trk_vtx",   &Reco_trk_vtx,    &b_Reco_trk_vtx);
+  // t->SetBranchAddress("Reco_trk_size",  &Reco_trk_size,   &b_Reco_trk_size);
+  // t->SetBranchAddress("Reco_trk_4mom",  &Reco_trk_4mom,   &b_Reco_trk_4mom);
+  // t->SetBranchAddress("Reco_trk_vtx",   &Reco_trk_vtx,    &b_Reco_trk_vtx);
 
   // #### define control histograms
   TH1F *h_QQ_mass   = new TH1F("h_QQ_mass","",nBins, mass_min,mass_max);  // all OS
@@ -646,14 +646,14 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
       nPlusMu=0;
       nMinusMu=0;
       for(int iMu = 0; iMu < Reco_mu_size; iMu++)
-	{
-	  if (Reco_mu_charge[iMu] == 1) nPlusMu++;
-	  else nMinusMu++;
-	  TLorentzVector *Reco_mu = (TLorentzVector *) Reco_mu_4mom->At(iMu);
-	  muPt[iMu]=Reco_mu->Pt();
-	  muEta[iMu]=Reco_mu->Eta();
-	  muPhi[iMu]=Reco_mu->Phi();
-	}
+   {
+     if (Reco_mu_charge[iMu] == 1) nPlusMu++;
+     else nMinusMu++;
+     TLorentzVector *Reco_mu = (TLorentzVector *) Reco_mu_4mom->At(iMu);
+     muPt[iMu]=Reco_mu->Pt();
+     muEta[iMu]=Reco_mu->Eta();
+     muPhi[iMu]=Reco_mu->Phi();
+   }
       MuTree->Fill();
 
       // // ntrk loop
@@ -667,155 +667,156 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
 
       //----------------------------------------------------
        for(int iQQ = 0; iQQ < Reco_QQ_size; iQQ++)
-	{
-	  vProb  = Reco_QQ_VtxProb[iQQ];
-	  QQsign = Reco_QQ_sign[iQQ];
-	  
-	  QQTrkDr03 = Reco_QQ_NtrkDeltaR03[iQQ];
-	  QQTrkDr04 = Reco_QQ_NtrkDeltaR04[iQQ];
-	  QQTrkDr05 = Reco_QQ_NtrkDeltaR05[iQQ];
+   {
+     vProb  = Reco_QQ_VtxProb[iQQ];
+     QQsign = Reco_QQ_sign[iQQ];
+     
+     QQTrkDr03 = Reco_QQ_NtrkDeltaR03[iQQ];
+     QQTrkDr04 = Reco_QQ_NtrkDeltaR04[iQQ];
+     QQTrkDr05 = Reco_QQ_NtrkDeltaR05[iQQ];
 
-	  QQTrkPt04 = Reco_QQ_NtrkPt04[iQQ];
-	  QQTrkPt03 = Reco_QQ_NtrkPt03[iQQ];
-	  QQTrkPt02 = Reco_QQ_NtrkPt02[iQQ];
+     QQTrkPt04 = Reco_QQ_NtrkPt04[iQQ];
+     QQTrkPt03 = Reco_QQ_NtrkPt03[iQQ];
+     QQTrkPt02 = Reco_QQ_NtrkPt02[iQQ];
 
-	  //	  have to red a bit about the weighting Zhen calculates ...
-	  if (Reco_QQ_sign[iQQ] == 0) // opposite sign
-	    { 
-	      weight  = 1;
-	      weight2 = 1;
-	    }
-	  else // same sign
-	    {
-	      weight  = -1;
-	      float likesign_comb        = (float)nPlusMu*(nPlusMu-1.0)/2.0+(float)nMinusMu*(nMinusMu-1.0)/2.0; // number of combinatorial pairs C(nplus)^2, C(nminus)^2
-	    float unlikesign_bkgd_comb = (float)nPlusMu*nMinusMu - (nPlusMu>nMinusMu?nMinusMu:nPlusMu);
-	    weight2 = -1.0 * unlikesign_bkgd_comb/likesign_comb;
-	    }
-	  
-	  // dimuon variables
-	  TLorentzVector *Reco_QQ      = (TLorentzVector *) Reco_QQ_4mom->At(iQQ);
-	  TLorentzVector *Reco_QQ_mupl = (TLorentzVector *) Reco_QQ_mupl_4mom->At(iQQ);
-	  TLorentzVector *Reco_QQ_mumi = (TLorentzVector *) Reco_QQ_mumi_4mom->At(iQQ);
-	  invariantMass = Reco_QQ->M();
-	  upsPt         = Reco_QQ->Pt();
-	  upsEta        = Reco_QQ->Eta();
-	  upsPhi        = Reco_QQ->Phi();
-	  upsRapidity   = Reco_QQ->Rapidity();
-	  
-	  // single muon variables
-	  muMinusPt     = Reco_QQ_mumi->Pt();
-	  muMinusEta    = Reco_QQ_mumi->Eta();
-	  muMinusPhi    = Reco_QQ_mumi->Phi();
-	  muPlusPt      = Reco_QQ_mupl->Pt();
-	  muPlusEta     = Reco_QQ_mupl->Eta();
-	  muPlusPhi     = Reco_QQ_mupl->Phi();
-	  	  
-	  // apply extra selection
-	  // id muplus
+     //	  have to red a bit about the weighting Zhen calculates ...
+     if (Reco_QQ_sign[iQQ] == 0) // opposite sign
+       { 
+         weight  = 1;
+         weight2 = 1;
+       }
+     else // same sign
+       {
+         weight  = -1;
+         float likesign_comb        = (float)nPlusMu*(nPlusMu-1.0)/2.0+(float)nMinusMu*(nMinusMu-1.0)/2.0; // number of combinatorial pairs C(nplus)^2, C(nminus)^2
+       float unlikesign_bkgd_comb = (float)nPlusMu*nMinusMu - (nPlusMu>nMinusMu?nMinusMu:nPlusMu);
+       weight2 = -1.0 * unlikesign_bkgd_comb/likesign_comb;
+       }
+     
+     // dimuon variables
+     TLorentzVector *Reco_QQ      = (TLorentzVector *) Reco_QQ_4mom->At(iQQ);
+     TLorentzVector *Reco_QQ_mupl = (TLorentzVector *) Reco_QQ_mupl_4mom->At(iQQ);
+     TLorentzVector *Reco_QQ_mumi = (TLorentzVector *) Reco_QQ_mumi_4mom->At(iQQ);
+     invariantMass = Reco_QQ->M();
+     upsPt         = Reco_QQ->Pt();
+     upsEta        = Reco_QQ->Eta();
+     upsPhi        = Reco_QQ->Phi();
+     upsRapidity   = Reco_QQ->Rapidity();
+     
+     // single muon variables
+     muMinusPt     = Reco_QQ_mumi->Pt();
+     muMinusEta    = Reco_QQ_mumi->Eta();
+     muMinusPhi    = Reco_QQ_mumi->Phi();
+     muPlusPt      = Reco_QQ_mupl->Pt();
+     muPlusEta     = Reco_QQ_mupl->Eta();
+     muPlusPhi     = Reco_QQ_mupl->Phi();
+          
+     // apply extra selection
+     // id muplus
 
-	  _mupl_nTrkHits       = Reco_QQ_mupl_nTrkHits[iQQ];
-	  _mupl_normChi2_inner = Reco_QQ_mupl_normChi2_inner[iQQ];
-	  _mupl_normChi2_global= Reco_QQ_mupl_normChi2_global[iQQ];
-	  _mupl_dxy            = Reco_QQ_mupl_dxy[iQQ];
-	  _mupl_dxyErr         = Reco_QQ_mupl_dxyErr[iQQ];
-	  _mupl_dz             = Reco_QQ_mupl_dz[iQQ];
-	  _mupl_dzErr          = Reco_QQ_mupl_dzErr[iQQ];
-	  _mupl_TrkMuArb       = Reco_QQ_mupl_TrkMuArb[iQQ];
-	  _mupl_TMOneStaTight  = Reco_QQ_mupl_TMOneStaTight[iQQ];
-	  _mupl_nMuValHits     = Reco_QQ_mupl_nMuValHits[iQQ];
-	  _mupl_nPixWMea       = Reco_QQ_mupl_nPixWMea[iQQ];
-	  _mupl_nTrkWMea       = Reco_QQ_mupl_nTrkWMea[iQQ];
-	  _mupl_StationsMatched = Reco_QQ_mupl_StationsMatched[iQQ]; 
-	  _mupl_pt_inner      = Reco_QQ_mupl_pt_inner[iQQ];
-	  _mupl_pt_global     = Reco_QQ_mupl_pt_global[iQQ];
-	  _mupl_ptErr_inner   = Reco_QQ_mupl_ptErr_inner[iQQ];
-	  _mupl_ptErr_global  = Reco_QQ_mupl_ptErr_global[iQQ];
+     _mupl_nTrkHits       = Reco_QQ_mupl_nTrkHits[iQQ];
+     _mupl_normChi2_inner = Reco_QQ_mupl_normChi2_inner[iQQ];
+     _mupl_normChi2_global= Reco_QQ_mupl_normChi2_global[iQQ];
+     _mupl_dxy            = Reco_QQ_mupl_dxy[iQQ];
+     _mupl_dxyErr         = Reco_QQ_mupl_dxyErr[iQQ];
+     _mupl_dz             = Reco_QQ_mupl_dz[iQQ];
+     _mupl_dzErr          = Reco_QQ_mupl_dzErr[iQQ];
+     _mupl_TrkMuArb       = Reco_QQ_mupl_TrkMuArb[iQQ];
+     _mupl_TMOneStaTight  = Reco_QQ_mupl_TMOneStaTight[iQQ];
+     _mupl_nMuValHits     = Reco_QQ_mupl_nMuValHits[iQQ];
+     _mupl_nPixWMea       = Reco_QQ_mupl_nPixWMea[iQQ];
+     _mupl_nTrkWMea       = Reco_QQ_mupl_nTrkWMea[iQQ];
+     _mupl_StationsMatched = Reco_QQ_mupl_StationsMatched[iQQ]; 
+     _mupl_pt_inner      = Reco_QQ_mupl_pt_inner[iQQ];
+     _mupl_pt_global     = Reco_QQ_mupl_pt_global[iQQ];
+     _mupl_ptErr_inner   = Reco_QQ_mupl_ptErr_inner[iQQ];
+     _mupl_ptErr_global  = Reco_QQ_mupl_ptErr_global[iQQ];
 
-	  // id muminus
-	  
-	  _mumi_nTrkHits       = Reco_QQ_mumi_nTrkHits[iQQ];
-	  _mumi_normChi2_inner = Reco_QQ_mumi_normChi2_inner[iQQ];
-	  _mumi_normChi2_global= Reco_QQ_mumi_normChi2_global[iQQ];
-	  _mumi_dxy            = Reco_QQ_mumi_dxy[iQQ];
-	  _mumi_dxyErr         = Reco_QQ_mumi_dxyErr[iQQ];
-	  _mumi_dz             = Reco_QQ_mumi_dz[iQQ];
-	  _mumi_dzErr          = Reco_QQ_mumi_dzErr[iQQ];
-	  _mumi_TrkMuArb       = Reco_QQ_mumi_TrkMuArb[iQQ];	
-	  _mumi_TMOneStaTight  =Reco_QQ_mumi_TMOneStaTight[iQQ];
-	  _mumi_nMuValHits     = Reco_QQ_mumi_nMuValHits[iQQ];
-	  _mumi_nPixWMea       = Reco_QQ_mumi_nPixWMea[iQQ];
-	  _mumi_nTrkWMea       = Reco_QQ_mumi_nTrkWMea[iQQ];
-	  _mumi_StationsMatched = Reco_QQ_mumi_StationsMatched[iQQ];
-	  _mumi_pt_inner       = Reco_QQ_mumi_pt_inner[iQQ]; 
-	  _mumi_pt_global      = Reco_QQ_mumi_pt_global[iQQ];
-	  _mumi_ptErr_inner    = Reco_QQ_mumi_ptErr_inner[iQQ];
-	  _mumi_ptErr_global   = Reco_QQ_mumi_ptErr_global[iQQ];
+     // id muminus
+     
+     _mumi_nTrkHits       = Reco_QQ_mumi_nTrkHits[iQQ];
+     _mumi_normChi2_inner = Reco_QQ_mumi_normChi2_inner[iQQ];
+     _mumi_normChi2_global= Reco_QQ_mumi_normChi2_global[iQQ];
+     _mumi_dxy            = Reco_QQ_mumi_dxy[iQQ];
+     _mumi_dxyErr         = Reco_QQ_mumi_dxyErr[iQQ];
+     _mumi_dz             = Reco_QQ_mumi_dz[iQQ];
+     _mumi_dzErr          = Reco_QQ_mumi_dzErr[iQQ];
+     _mumi_TrkMuArb       = Reco_QQ_mumi_TrkMuArb[iQQ];	
+     _mumi_TMOneStaTight  =Reco_QQ_mumi_TMOneStaTight[iQQ];
+     _mumi_nMuValHits     = Reco_QQ_mumi_nMuValHits[iQQ];
+     _mumi_nPixWMea       = Reco_QQ_mumi_nPixWMea[iQQ];
+     _mumi_nTrkWMea       = Reco_QQ_mumi_nTrkWMea[iQQ];
+     _mumi_StationsMatched = Reco_QQ_mumi_StationsMatched[iQQ];
+     _mumi_pt_inner       = Reco_QQ_mumi_pt_inner[iQQ]; 
+     _mumi_pt_global      = Reco_QQ_mumi_pt_global[iQQ];
+     _mumi_ptErr_inner    = Reco_QQ_mumi_ptErr_inner[iQQ];
+     _mumi_ptErr_global   = Reco_QQ_mumi_ptErr_global[iQQ];
 
-	  //dimuon variables
-	  
-	  QQtrig = Reco_QQ_trig[iQQ];
-	  _ctau = (invariantMass/3.0968)*Reco_QQ_ctau[iQQ];
-  	  _ctauTrue = (invariantMass/3.0968)*Reco_QQ_ctauTrue[iQQ];
-  	  _ctauErr = (invariantMass/3.0968)*Reco_QQ_ctauErr[iQQ];
-	  _zVtx=zVtx[iQQ];	     
-	  _dca=Reco_QQ_dca[iQQ];
-	 
-	  bool bProcess = false;
-	  if(!bAllTriggers) bProcess = ((HLTriggers&nTriggerBit)==nTriggerBit && (Reco_QQ_trig[iQQ]&nTriggerBit)==nTriggerBit && 
-					vProb>newVtxProbCut && muMinusPt>ptcut && muPlusPt>ptcut);
-	  // for PbPB sample, the v1 and v2 same trigger is in nNtriggerBit=1 and nTriggerBit=2 respectivelly
-	  /* if(isAArereco) bProcess = (( ( (HLTriggers&nTriggerBit)==nTriggerBit && (Reco_QQ_trig[iQQ]&nTriggerBit)==nTriggerBit ) || 
-	  			       ( (HLTriggers&(nTriggerBit+1))==(nTriggerBit+1) && (Reco_QQ_trig[iQQ]&(nTriggerBit+1))==(nTriggerBit+1) ) )
-				       &&  vProb>newVtxProbCut && muMinusPt>ptcut && muPlusPt>ptcut);*/
-	  //special case of a new tree in which I match only by filter (I assume this is equivalent as having HLTriggers fired)
-	  if(isAArereco) bProcess =  (( (Reco_QQ_trig[iQQ]&(nTriggerBit+1))==(nTriggerBit+1) || (Reco_QQ_trig[iQQ]&nTriggerBit)==nTriggerBit )&& vProb>newVtxProbCut && muMinusPt>ptcut && muPlusPt>ptcut ); 
-	  if (bProcess)
-	    {
-	      if (i%1000==0) 	      cout << i << endl;
-	      UpsilonTree_allsign->Fill();// all sign and all mass
-	      if (QQsign==0) // opposite sign
-		{
-		  UpsilonTree->Fill();// OS and all mass
-		  if (Reco_QQ->M()>mass_min && Reco_QQ->M()<mass_max) 
-		    {
-		      h_QQ_mass->Fill(Reco_QQ->M());// all upsilons in 7->14
-		    }
-		  if (Reco_QQ_mupl->Pt()>=ptcut && Reco_QQ_mumi->Pt()>=ptcut && Reco_QQ->M()>mass_min && Reco_QQ->M()<mass_max) 
-		    {
-		      h_QQ_mass_1->Fill(Reco_QQ->M()); // all OS upsilons in 7->14 and pt_mu>4GeV/c
-		    }
-		}//opposite sign
-	      else // same sign in the acceptance
-		if (Reco_QQ_mupl->Pt()>=ptcut && Reco_QQ_mumi->Pt()>=ptcut && Reco_QQ->M()>mass_min && Reco_QQ->M()<mass_max) 
-		  {
-		    h_QQ_mass_2->Fill(Reco_QQ->M());// all SS upsilons in 7->14 and pt_mu>4GeV/c
-		  }
-	      
+     //dimuon variables
+     
+     QQtrig = Reco_QQ_trig[iQQ];
+     _ctau = (invariantMass/3.0968)*Reco_QQ_ctau[iQQ];
+       _ctauTrue = (invariantMass/3.0968)*Reco_QQ_ctauTrue[iQQ];
+       _ctauErr = (invariantMass/3.0968)*Reco_QQ_ctauErr[iQQ];
+     _zVtx=zVtx[iQQ];	     
+     _dca=Reco_QQ_dca[iQQ];
+    
+     bool bProcess = false;
+     if(!bAllTriggers) bProcess = ((HLTriggers&nTriggerBit)==nTriggerBit && (Reco_QQ_trig[iQQ]&nTriggerBit)==nTriggerBit && 
+               vProb>newVtxProbCut && muMinusPt>ptcut && muPlusPt>ptcut);
+     // for PbPB sample, the v1 and v2 same trigger is in nNtriggerBit=1 and nTriggerBit=2 respectivelly
+     /* if(isAArereco) bProcess = (( ( (HLTriggers&nTriggerBit)==nTriggerBit && (Reco_QQ_trig[iQQ]&nTriggerBit)==nTriggerBit ) || 
+                     ( (HLTriggers&(nTriggerBit+1))==(nTriggerBit+1) && (Reco_QQ_trig[iQQ]&(nTriggerBit+1))==(nTriggerBit+1) ) )
+                   &&  vProb>newVtxProbCut && muMinusPt>ptcut && muPlusPt>ptcut);*/
+     //special case of a new tree in which I match only by filter (I assume this is equivalent as having HLTriggers fired)
+     else if(isAArereco) bProcess =  (( (Reco_QQ_trig[iQQ]&(nTriggerBit+1))==(nTriggerBit+1) || (Reco_QQ_trig[iQQ]&nTriggerBit)==nTriggerBit )&& vProb>newVtxProbCut && muMinusPt>ptcut && muPlusPt>ptcut ); 
+     else bProcess = true;
+     if (bProcess)
+       {
+         if (i%1000==0) 	      cout << i << endl;
+         UpsilonTree_allsign->Fill();// all sign and all mass
+         if (QQsign==0) // opposite sign
+      {
+        UpsilonTree->Fill();// OS and all mass
+        if (Reco_QQ->M()>mass_min && Reco_QQ->M()<mass_max) 
+          {
+            h_QQ_mass->Fill(Reco_QQ->M());// all upsilons in 7->14
+          }
+        if (Reco_QQ_mupl->Pt()>=ptcut && Reco_QQ_mumi->Pt()>=ptcut && Reco_QQ->M()>mass_min && Reco_QQ->M()<mass_max) 
+          {
+            h_QQ_mass_1->Fill(Reco_QQ->M()); // all OS upsilons in 7->14 and pt_mu>4GeV/c
+          }
+      }//opposite sign
+         else // same sign in the acceptance
+      if (Reco_QQ_mupl->Pt()>=ptcut && Reco_QQ_mumi->Pt()>=ptcut && Reco_QQ->M()>mass_min && Reco_QQ->M()<mass_max) 
+        {
+          h_QQ_mass_2->Fill(Reco_QQ->M());// all SS upsilons in 7->14 and pt_mu>4GeV/c
+        }
+         
 
-	  //--------------------------------------------------------
-	  // %%%%%%%%%% track rotation: redefine some of the variables, the others remain the same
-	  Double_t ran = gRandom->Rndm();
-	  
-	  if(ran < 0.5 ) RmuPlusPhi = muPlusPhi + TMath::Pi();
-	  else  RmuMinusPhi = muMinusPhi + TMath::Pi();
-	    
-	  TLorentzVector mu1;
-	  mu1.SetPtEtaPhiM( muPlusPt, muPlusEta, RmuPlusPhi, 0.105);
-	  TLorentzVector mu2;
-	  mu2.SetPtEtaPhiM( muMinusPt, muMinusEta, RmuMinusPhi, 0.105);
-	  
-	  TLorentzVector dimuon;
-	  dimuon = mu1 + mu2;
-	  
-	  invariantMass = dimuon.M();
-	  upsPt         = dimuon.Pt();
-	  upsEta        = dimuon.Eta();
-	  upsRapidity   = dimuon.Rapidity();
+     //--------------------------------------------------------
+     // %%%%%%%%%% track rotation: redefine some of the variables, the others remain the same
+     Double_t ran = gRandom->Rndm();
+     
+     if(ran < 0.5 ) RmuPlusPhi = muPlusPhi + TMath::Pi();
+     else  RmuMinusPhi = muMinusPhi + TMath::Pi();
+       
+     TLorentzVector mu1;
+     mu1.SetPtEtaPhiM( muPlusPt, muPlusEta, RmuPlusPhi, 0.105);
+     TLorentzVector mu2;
+     mu2.SetPtEtaPhiM( muMinusPt, muMinusEta, RmuMinusPhi, 0.105);
+     
+     TLorentzVector dimuon;
+     dimuon = mu1 + mu2;
+     
+     invariantMass = dimuon.M();
+     upsPt         = dimuon.Pt();
+     upsEta        = dimuon.Eta();
+     upsRapidity   = dimuon.Rapidity();
 
-	  UpsilonTree_trkRot->Fill();
-	  
-	}// if bProcess
+     UpsilonTree_trkRot->Fill();
+     
+   }// if bProcess
       }// for each QQ pair		
     }// for each event in the tree
   
@@ -860,6 +861,7 @@ void MakeTree_2015(const char* inputOniaTree = "../All_v2.24_Histos_Runs_211739-
   c1->SaveAs(Form("dimuonDistribution_%s_Run%s_trigBit%d_allTriggers%d.gif",dataSource,runNumber,nTriggerBit,bAllTriggers));
   c1->Write();
   f1->Write();
+  f1->Close();
 }
 
 
