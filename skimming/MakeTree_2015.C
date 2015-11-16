@@ -176,10 +176,10 @@ void MakeTree_2015(const char* inputOniaTree = "/afs/cern.ch/user/e/echapon/work
 
   float weight;
   float weight2;
-  Float_t upsPt;
-  Float_t upsEta;
-  Float_t upsPhi;
-  Float_t upsRapidity;	
+  Float_t dimuPt;
+  Float_t dimuEta;
+  Float_t dimuPhi;
+  Float_t dimuRapidity;	
   Float_t vProb;
   Float_t muPlusPt;
   Float_t muMinusPt;
@@ -434,9 +434,9 @@ void MakeTree_2015(const char* inputOniaTree = "/afs/cern.ch/user/e/echapon/work
   TFile *f1 = new TFile(Form("../dimuonTree_%s_Run%s_trigBit%d_allTriggers%d.root",dataSource,runNumber,nTriggerBit,bAllTriggers),"RECREATE");
 
   TTree *MuTree              = new TTree("MuTree","MuTree");
-  TTree *UpsilonTree         = new TTree("UpsilonTree","UpsilonTree");
-  TTree *UpsilonTree_allsign = new TTree("UpsilonTree_allsign","UpsilonTree_allsign");
-  TTree *UpsilonTree_trkRot  = new TTree("UpsilonTree_trkRot","UpsilonTree_trkRot");
+  TTree *DiMuonTree         = new TTree("DiMuonTree","DiMuonTree");
+  TTree *DiMuonTree_allsign = new TTree("DiMuonTree_allsign","DiMuonTree_allsign");
+  TTree *DiMuonTree_trkRot  = new TTree("DiMuonTree_trkRot","DiMuonTree_trkRot");
 
   MuTree->Branch("Reco_mu_size",   &Reco_mu_size,   "Reco_mu_size/I");
   MuTree->Branch("nPlusMu",        &nPlusMu,        "nPlusMu/I");
@@ -449,188 +449,188 @@ void MakeTree_2015(const char* inputOniaTree = "/afs/cern.ch/user/e/echapon/work
   MuTree->Branch("eventNb",        &eventNb,        "eventNb/I");
   MuTree->Branch("runNb",          &runNb,          "runNb/I");
 
-  //UpsilonTree->Branch("nReco_QQ", &nReco_QQ, "nReco_QQ/I");
-  UpsilonTree->Branch("Centrality",    &Centrality,    "Centrality/I");
-  UpsilonTree->Branch("HLTriggers",    &HLTriggers,    "HLTriggers/I");
-  UpsilonTree->Branch("QQsign",        &QQsign,        "QQsign/I");
-  UpsilonTree->Branch("QQTrkDr03",     &QQTrkDr03,     "QQTrkDr03/I");
-  UpsilonTree->Branch("QQTrkDr04",     &QQTrkDr04,     "QQTrkDr04/I");
-  UpsilonTree->Branch("QQTrkDr05",     &QQTrkDr05,     "QQTrkDr05/I");
+  //DiMuonTree->Branch("nReco_QQ", &nReco_QQ, "nReco_QQ/I");
+  DiMuonTree->Branch("Centrality",    &Centrality,    "Centrality/I");
+  DiMuonTree->Branch("HLTriggers",    &HLTriggers,    "HLTriggers/I");
+  DiMuonTree->Branch("QQsign",        &QQsign,        "QQsign/I");
+  DiMuonTree->Branch("QQTrkDr03",     &QQTrkDr03,     "QQTrkDr03/I");
+  DiMuonTree->Branch("QQTrkDr04",     &QQTrkDr04,     "QQTrkDr04/I");
+  DiMuonTree->Branch("QQTrkDr05",     &QQTrkDr05,     "QQTrkDr05/I");
 
-  UpsilonTree->Branch("QQTrkPt02",     &QQTrkPt02,     "QQTrkPt02/I");
-  UpsilonTree->Branch("QQTrkPt03",     &QQTrkPt03,     "QQTrkPt03/I");
-  UpsilonTree->Branch("QQTrkPt04",     &QQTrkPt04,     "QQTrkPt04/I");
+  DiMuonTree->Branch("QQTrkPt02",     &QQTrkPt02,     "QQTrkPt02/I");
+  DiMuonTree->Branch("QQTrkPt03",     &QQTrkPt03,     "QQTrkPt03/I");
+  DiMuonTree->Branch("QQTrkPt04",     &QQTrkPt04,     "QQTrkPt04/I");
   
-  UpsilonTree->Branch("eventNb",       &eventNb,     "eventNb/I");
-  UpsilonTree->Branch("runNb",         &runNb,     "runNb/I");
-  UpsilonTree->Branch("invariantMass", &invariantMass, "invariantMass/F");
-  UpsilonTree->Branch("upsPt",         &upsPt, "upsPt/F");
-  UpsilonTree->Branch("upsEta",        &upsEta, "upsEta/F");
-  UpsilonTree->Branch("upsPhi",        &upsPhi, "upsPhi/F");
-  UpsilonTree->Branch("upsRapidity",   &upsRapidity, "upsRapidity/F");
-  UpsilonTree->Branch("muPlusPt",      &muPlusPt, "muPlusPt/F");
-  UpsilonTree->Branch("muMinusPt",     &muMinusPt, "muMinusPt/F");
-  UpsilonTree->Branch("muPlusEta",     &muPlusEta, "muPlusEta/F");
-  UpsilonTree->Branch("muMinusEta",    &muMinusEta, "muMinusEta/F");
-  UpsilonTree->Branch("muPlusPhi",     &muPlusPhi, "muPlusPhi/F");
-  UpsilonTree->Branch("muMinusPhi",    &muMinusPhi, "muMinusPhi/F");
+  DiMuonTree->Branch("eventNb",       &eventNb,     "eventNb/I");
+  DiMuonTree->Branch("runNb",         &runNb,     "runNb/I");
+  DiMuonTree->Branch("invariantMass", &invariantMass, "invariantMass/F");
+  DiMuonTree->Branch("dimuPt",         &dimuPt, "dimuPt/F");
+  DiMuonTree->Branch("dimuEta",        &dimuEta, "dimuEta/F");
+  DiMuonTree->Branch("dimuPhi",        &dimuPhi, "dimuPhi/F");
+  DiMuonTree->Branch("dimuRapidity",   &dimuRapidity, "dimuRapidity/F");
+  DiMuonTree->Branch("muPlusPt",      &muPlusPt, "muPlusPt/F");
+  DiMuonTree->Branch("muMinusPt",     &muMinusPt, "muMinusPt/F");
+  DiMuonTree->Branch("muPlusEta",     &muPlusEta, "muPlusEta/F");
+  DiMuonTree->Branch("muMinusEta",    &muMinusEta, "muMinusEta/F");
+  DiMuonTree->Branch("muPlusPhi",     &muPlusPhi, "muPlusPhi/F");
+  DiMuonTree->Branch("muMinusPhi",    &muMinusPhi, "muMinusPhi/F");
   // additional selection
   // id muplus
-  UpsilonTree->Branch("_mupl_TrkMuArb",&_mupl_TrkMuArb,"_mupl_TrkMuArb/O");
-  UpsilonTree->Branch("_mupl_TMOneStaTight",&_mupl_TMOneStaTight,"_mupl_TMOneStaTight/O");  // new bool, unused in upsilon(?)
-  UpsilonTree->Branch("_mupl_nMuValHits",&_mupl_nMuValHits,"_mupl_nMuValHits/I"); // new int, unused in upsilon
-  UpsilonTree->Branch("_mupl_nPixWMea",&_mupl_nPixWMea,"_mupl_nPixWMea/I"); // new int, unused in upsilon
-  UpsilonTree->Branch("_mupl_nTrkWMea",&_mupl_nTrkWMea,"_mupl_nTrkWMea/I"); // new int, unused in upsilon
-  UpsilonTree->Branch("_mupl_StationsMatched",&_mupl_StationsMatched,"_mupl_StationsMatched/I"); // new int, unused in Upsilon
-  UpsilonTree->Branch("_mupl_pt_inner",&_mupl_pt_inner,"_mupl_pt_inner/F"); // new float, unused.
-  UpsilonTree->Branch("_mupl_pt_global",&_mupl_pt_global,"_mupl_pt_global/F"); //new float, unused.
-  UpsilonTree->Branch("_mupl_ptErr_inner",&_mupl_ptErr_inner,"_mupl_ptErr_inner/F"); // new float, unused.
-  UpsilonTree->Branch("_mupl_ptErr_global",&_mupl_ptErr_global,"_mupl_ptErr_global/F"); //new float, unused.
-  UpsilonTree->Branch("_mupl_nTrkHits",&_mupl_nTrkHits," _mupl_nTrkHits/I");
-  UpsilonTree->Branch("_mupl_normChi2_inner", &_mupl_normChi2_inner," _mupl_normChi2_inner/F");
-  UpsilonTree->Branch("_mupl_normChi2_global",&_mupl_normChi2_global,"_mupl_normChi2_global/F");
-  UpsilonTree->Branch("_mupl_dxy",&_mupl_dxy,"_mupl_dxy/F");
-  UpsilonTree->Branch("_mupl_dxyErr",&_mupl_dxyErr,"_mupl_dxyErr/F");
-  UpsilonTree->Branch("_mupl_dz",&_mupl_dz,"_mupl_dz/F");
-  UpsilonTree->Branch("_mupl_dzErr",&_mupl_dzErr,"_mupl_dzErr/F");
+  DiMuonTree->Branch("_mupl_TrkMuArb",&_mupl_TrkMuArb,"_mupl_TrkMuArb/O");
+  DiMuonTree->Branch("_mupl_TMOneStaTight",&_mupl_TMOneStaTight,"_mupl_TMOneStaTight/O");  // new bool, unused in upsilon(?)
+  DiMuonTree->Branch("_mupl_nMuValHits",&_mupl_nMuValHits,"_mupl_nMuValHits/I"); // new int, unused in upsilon
+  DiMuonTree->Branch("_mupl_nPixWMea",&_mupl_nPixWMea,"_mupl_nPixWMea/I"); // new int, unused in upsilon
+  DiMuonTree->Branch("_mupl_nTrkWMea",&_mupl_nTrkWMea,"_mupl_nTrkWMea/I"); // new int, unused in upsilon
+  DiMuonTree->Branch("_mupl_StationsMatched",&_mupl_StationsMatched,"_mupl_StationsMatched/I"); // new int, unused in Upsilon
+  DiMuonTree->Branch("_mupl_pt_inner",&_mupl_pt_inner,"_mupl_pt_inner/F"); // new float, unused.
+  DiMuonTree->Branch("_mupl_pt_global",&_mupl_pt_global,"_mupl_pt_global/F"); //new float, unused.
+  DiMuonTree->Branch("_mupl_ptErr_inner",&_mupl_ptErr_inner,"_mupl_ptErr_inner/F"); // new float, unused.
+  DiMuonTree->Branch("_mupl_ptErr_global",&_mupl_ptErr_global,"_mupl_ptErr_global/F"); //new float, unused.
+  DiMuonTree->Branch("_mupl_nTrkHits",&_mupl_nTrkHits," _mupl_nTrkHits/I");
+  DiMuonTree->Branch("_mupl_normChi2_inner", &_mupl_normChi2_inner," _mupl_normChi2_inner/F");
+  DiMuonTree->Branch("_mupl_normChi2_global",&_mupl_normChi2_global,"_mupl_normChi2_global/F");
+  DiMuonTree->Branch("_mupl_dxy",&_mupl_dxy,"_mupl_dxy/F");
+  DiMuonTree->Branch("_mupl_dxyErr",&_mupl_dxyErr,"_mupl_dxyErr/F");
+  DiMuonTree->Branch("_mupl_dz",&_mupl_dz,"_mupl_dz/F");
+  DiMuonTree->Branch("_mupl_dzErr",&_mupl_dzErr,"_mupl_dzErr/F");
   //id muminus
-  UpsilonTree->Branch("_mumi_TrkMuArb",&_mumi_TrkMuArb,"_mumi_TrkMuArb/O");
-  UpsilonTree->Branch("_mumi_TMOneStaTight",&_mumi_TMOneStaTight,"_mumi_TMOneStaTight/O");  // new bool, unused in upsilon(?)
-  UpsilonTree->Branch("_mumi_nMuValHits",&_mumi_nMuValHits,"_mumi_nMuValHits/I"); // new int, unused in upsilon
-  UpsilonTree->Branch("_mumi_nPixWMea",&_mumi_nPixWMea,"_mumi_nPixWMea/I"); // new int, unused in upsilon
-  UpsilonTree->Branch("_mumi_nTrkWMea",&_mumi_nTrkWMea,"_mumi_nTrkWMea/I"); // new int, unused in upsilon
-  UpsilonTree->Branch("_mumi_StationsMatched",&_mumi_StationsMatched,"_mumi_StationsMatched/I"); // new int, unused in Upsilon
-  UpsilonTree->Branch("_mumi_pt_inner",&_mumi_pt_inner,"_mumi_pt_inner/F"); // new float, unused.
-  UpsilonTree->Branch("_mumi_pt_global",&_mumi_pt_global,"_mumi_pt_global/F"); //new float, unused.
-  UpsilonTree->Branch("_mumi_ptErr_inner",&_mumi_ptErr_inner,"_mumi_ptErr_inner/F"); // new float, unused.
-  UpsilonTree->Branch("_mumi_ptErr_global",&_mumi_ptErr_global,"_mumi_ptErr_global/F"); //new float, unused.
-  UpsilonTree->Branch("_mumi_nTrkHits",&_mumi_nTrkHits," _mumi_nTrkHits/I");
-  UpsilonTree->Branch("_mumi_normChi2_inner", &_mumi_normChi2_inner," _mumi_normChi2_inner/F");
-  UpsilonTree->Branch("_mumi_normChi2_global",&_mumi_normChi2_global,"_mumi_normChi2_global/F");
-  UpsilonTree->Branch("_mumi_dxy",&_mumi_dxy,"_mumi_dxy/F");
-  UpsilonTree->Branch("_mumi_dxyErr",&_mumi_dxyErr,"_mumi_dxyErr/F");
-  UpsilonTree->Branch("_mumi_dz",&_mumi_dz,"_mumi_dz/F");
-  UpsilonTree->Branch("_mumi_dzErr",&_mumi_dzErr,"_mumi_dzErr/F");
+  DiMuonTree->Branch("_mumi_TrkMuArb",&_mumi_TrkMuArb,"_mumi_TrkMuArb/O");
+  DiMuonTree->Branch("_mumi_TMOneStaTight",&_mumi_TMOneStaTight,"_mumi_TMOneStaTight/O");  // new bool, unused in upsilon(?)
+  DiMuonTree->Branch("_mumi_nMuValHits",&_mumi_nMuValHits,"_mumi_nMuValHits/I"); // new int, unused in upsilon
+  DiMuonTree->Branch("_mumi_nPixWMea",&_mumi_nPixWMea,"_mumi_nPixWMea/I"); // new int, unused in upsilon
+  DiMuonTree->Branch("_mumi_nTrkWMea",&_mumi_nTrkWMea,"_mumi_nTrkWMea/I"); // new int, unused in upsilon
+  DiMuonTree->Branch("_mumi_StationsMatched",&_mumi_StationsMatched,"_mumi_StationsMatched/I"); // new int, unused in Upsilon
+  DiMuonTree->Branch("_mumi_pt_inner",&_mumi_pt_inner,"_mumi_pt_inner/F"); // new float, unused.
+  DiMuonTree->Branch("_mumi_pt_global",&_mumi_pt_global,"_mumi_pt_global/F"); //new float, unused.
+  DiMuonTree->Branch("_mumi_ptErr_inner",&_mumi_ptErr_inner,"_mumi_ptErr_inner/F"); // new float, unused.
+  DiMuonTree->Branch("_mumi_ptErr_global",&_mumi_ptErr_global,"_mumi_ptErr_global/F"); //new float, unused.
+  DiMuonTree->Branch("_mumi_nTrkHits",&_mumi_nTrkHits," _mumi_nTrkHits/I");
+  DiMuonTree->Branch("_mumi_normChi2_inner", &_mumi_normChi2_inner," _mumi_normChi2_inner/F");
+  DiMuonTree->Branch("_mumi_normChi2_global",&_mumi_normChi2_global,"_mumi_normChi2_global/F");
+  DiMuonTree->Branch("_mumi_dxy",&_mumi_dxy,"_mumi_dxy/F");
+  DiMuonTree->Branch("_mumi_dxyErr",&_mumi_dxyErr,"_mumi_dxyErr/F");
+  DiMuonTree->Branch("_mumi_dz",&_mumi_dz,"_mumi_dz/F");
+  DiMuonTree->Branch("_mumi_dzErr",&_mumi_dzErr,"_mumi_dzErr/F");
  //dimuon variables
-  UpsilonTree->Branch("QQtrig",        &QQtrig,        "QQtrig/I");
-  UpsilonTree->Branch("_dca",&_dca,"_dca/F");// new float, unused in upsilon
-  UpsilonTree->Branch("_ctau",&_ctau,"_ctau/F");// new float, unused in upsilon
-  UpsilonTree->Branch("_ctauErr",&_ctauErr,"_ctauErr/F");// new float, unused in upsilon
-  UpsilonTree->Branch("_ctauTrue",&_ctauTrue,"_ctauTrue/F");// new float, unused in upsilon
-  UpsilonTree->Branch("_zVtx",  &_zVtx,"_zVtx/F");
-  UpsilonTree->Branch("vProb",         &vProb,     "vProb/F");
+  DiMuonTree->Branch("QQtrig",        &QQtrig,        "QQtrig/I");
+  DiMuonTree->Branch("_dca",&_dca,"_dca/F");// new float, unused in upsilon
+  DiMuonTree->Branch("_ctau",&_ctau,"_ctau/F");// new float, unused in upsilon
+  DiMuonTree->Branch("_ctauErr",&_ctauErr,"_ctauErr/F");// new float, unused in upsilon
+  DiMuonTree->Branch("_ctauTrue",&_ctauTrue,"_ctauTrue/F");// new float, unused in upsilon
+  DiMuonTree->Branch("_zVtx",  &_zVtx,"_zVtx/F");
+  DiMuonTree->Branch("vProb",         &vProb,     "vProb/F");
   if(addExtraCentrality)
     {
-      UpsilonTree->Branch("Npix",&Npix,"Npix/I");
-      UpsilonTree->Branch("NpixelTracks",&NpixelTracks,"NpixelTracks/I");
-      UpsilonTree->Branch("Ntracks", &Ntracks, "Ntracks/I");
-      UpsilonTree->Branch("SumET_HF",&SumET_HF,"SumET_HF/F");
-      UpsilonTree->Branch("SumET_HFplus",&SumET_HFplus,"SumET_HFplus/F");
-      UpsilonTree->Branch("SumET_HFminus",&SumET_HFminus,"SumET_HFminus/F");
-      UpsilonTree->Branch("SumET_HFplusEta4",&SumET_HFplusEta4,"SumET_HFplusEta4/F");
-      UpsilonTree->Branch("SumET_HFminusEta4",&SumET_HFminusEta4,"SumET_HFminusEta4/F");
-      UpsilonTree->Branch("SumET_ET",&SumET_ET,"SumET_ET/F");
-      UpsilonTree->Branch("SumET_EE",&SumET_EE,"SumET_EE/F");
-      UpsilonTree->Branch("SumET_EB",&SumET_EB,"SumET_EB/F");
-      UpsilonTree->Branch("SumET_EEplus",&SumET_EEplus,"SumET_EEplus/F");
-      UpsilonTree->Branch("SumET_EEminus",&SumET_EEminus,"SumET_EEminus/F");
-      UpsilonTree->Branch("SumET_ZDC",&SumET_ZDC,"SumET_ZDC/F");
-      UpsilonTree->Branch("SumET_ZDCplus",&SumET_ZDCplus,"SumET_ZDCplus/F");
-      UpsilonTree->Branch("SumET_ZDCminus",&SumET_ZDCminus,"SumET_ZDCminus/F");
+      DiMuonTree->Branch("Npix",&Npix,"Npix/I");
+      DiMuonTree->Branch("NpixelTracks",&NpixelTracks,"NpixelTracks/I");
+      DiMuonTree->Branch("Ntracks", &Ntracks, "Ntracks/I");
+      DiMuonTree->Branch("SumET_HF",&SumET_HF,"SumET_HF/F");
+      DiMuonTree->Branch("SumET_HFplus",&SumET_HFplus,"SumET_HFplus/F");
+      DiMuonTree->Branch("SumET_HFminus",&SumET_HFminus,"SumET_HFminus/F");
+      DiMuonTree->Branch("SumET_HFplusEta4",&SumET_HFplusEta4,"SumET_HFplusEta4/F");
+      DiMuonTree->Branch("SumET_HFminusEta4",&SumET_HFminusEta4,"SumET_HFminusEta4/F");
+      DiMuonTree->Branch("SumET_ET",&SumET_ET,"SumET_ET/F");
+      DiMuonTree->Branch("SumET_EE",&SumET_EE,"SumET_EE/F");
+      DiMuonTree->Branch("SumET_EB",&SumET_EB,"SumET_EB/F");
+      DiMuonTree->Branch("SumET_EEplus",&SumET_EEplus,"SumET_EEplus/F");
+      DiMuonTree->Branch("SumET_EEminus",&SumET_EEminus,"SumET_EEminus/F");
+      DiMuonTree->Branch("SumET_ZDC",&SumET_ZDC,"SumET_ZDC/F");
+      DiMuonTree->Branch("SumET_ZDCplus",&SumET_ZDCplus,"SumET_ZDCplus/F");
+      DiMuonTree->Branch("SumET_ZDCminus",&SumET_ZDCminus,"SumET_ZDCminus/F");
     }
 
-  UpsilonTree_allsign->Branch("Centrality", &Centrality,    "Centrality/I");
-  UpsilonTree_allsign->Branch("HLTriggers", &HLTriggers,    "HLTriggers/I");
-  UpsilonTree_allsign->Branch("QQtrig",     &QQtrig,    "QQtrig/I");
-  UpsilonTree_allsign->Branch("QQsign",     &QQsign,    "QQsign/I");
-  UpsilonTree_allsign->Branch("QQTrkDr03",     &QQTrkDr03,     "QQTrkDr03/I");
-  UpsilonTree_allsign->Branch("QQTrkDr04",     &QQTrkDr04,     "QQTrkDr04/I");
-  UpsilonTree_allsign->Branch("QQTrkDr05",     &QQTrkDr05,     "QQTrkDr05/I");
-  UpsilonTree_allsign->Branch("QQTrkPt04",     &QQTrkPt04,     "QQTrkPt04/I");
-  UpsilonTree_allsign->Branch("QQTrkPt03",     &QQTrkPt03,     "QQTrkPt03/I");
-  UpsilonTree_allsign->Branch("QQTrkPt02",     &QQTrkPt02,     "QQTrkPt02/I");
-  UpsilonTree_allsign->Branch("weight",     &weight,    "weight/F");
-  UpsilonTree_allsign->Branch("weight2",    &weight2,    "weight2/F");
-  UpsilonTree_allsign->Branch("vProb",      &vProb,     "vProb/F");
-  UpsilonTree_allsign->Branch("eventNb",    &eventNb,     "eventNb/I");
-  UpsilonTree_allsign->Branch("runNb",      &runNb,     "runNb/I");
-  UpsilonTree_allsign->Branch("invariantMass", &invariantMass, "invariantMass/F");
-  UpsilonTree_allsign->Branch("upsPt",      &upsPt, "upsPt/F");
-  UpsilonTree_allsign->Branch("upsEta",     &upsEta, "upsEta/F");
-  UpsilonTree_allsign->Branch("upsPhi",     &upsPhi, "upsPhi/F");
-  UpsilonTree_allsign->Branch("upsRapidity",&upsRapidity, "upsRapidity/F");
-  UpsilonTree_allsign->Branch("muPlusPt",   &muPlusPt, "muPlusPt/F");
-  UpsilonTree_allsign->Branch("muMinusPt",  &muMinusPt, "muMinusPt/F");
-  UpsilonTree_allsign->Branch("muPlusEta",  &muPlusEta, "muPlusEta/F");
-  UpsilonTree_allsign->Branch("muMinusEta", &muMinusEta, "muMinusEta/F");
-  UpsilonTree_allsign->Branch("muPlusPhi",  &muPlusPhi, "muPlusPhi/F");
-  UpsilonTree_allsign->Branch("muMinusPhi", &muMinusPhi, "muMinusPhi/F");
+  DiMuonTree_allsign->Branch("Centrality", &Centrality,    "Centrality/I");
+  DiMuonTree_allsign->Branch("HLTriggers", &HLTriggers,    "HLTriggers/I");
+  DiMuonTree_allsign->Branch("QQtrig",     &QQtrig,    "QQtrig/I");
+  DiMuonTree_allsign->Branch("QQsign",     &QQsign,    "QQsign/I");
+  DiMuonTree_allsign->Branch("QQTrkDr03",     &QQTrkDr03,     "QQTrkDr03/I");
+  DiMuonTree_allsign->Branch("QQTrkDr04",     &QQTrkDr04,     "QQTrkDr04/I");
+  DiMuonTree_allsign->Branch("QQTrkDr05",     &QQTrkDr05,     "QQTrkDr05/I");
+  DiMuonTree_allsign->Branch("QQTrkPt04",     &QQTrkPt04,     "QQTrkPt04/I");
+  DiMuonTree_allsign->Branch("QQTrkPt03",     &QQTrkPt03,     "QQTrkPt03/I");
+  DiMuonTree_allsign->Branch("QQTrkPt02",     &QQTrkPt02,     "QQTrkPt02/I");
+  DiMuonTree_allsign->Branch("weight",     &weight,    "weight/F");
+  DiMuonTree_allsign->Branch("weight2",    &weight2,    "weight2/F");
+  DiMuonTree_allsign->Branch("vProb",      &vProb,     "vProb/F");
+  DiMuonTree_allsign->Branch("eventNb",    &eventNb,     "eventNb/I");
+  DiMuonTree_allsign->Branch("runNb",      &runNb,     "runNb/I");
+  DiMuonTree_allsign->Branch("invariantMass", &invariantMass, "invariantMass/F");
+  DiMuonTree_allsign->Branch("dimuPt",      &dimuPt, "dimuPt/F");
+  DiMuonTree_allsign->Branch("dimuEta",     &dimuEta, "dimuEta/F");
+  DiMuonTree_allsign->Branch("dimuPhi",     &dimuPhi, "dimuPhi/F");
+  DiMuonTree_allsign->Branch("dimuRapidity",&dimuRapidity, "dimuRapidity/F");
+  DiMuonTree_allsign->Branch("muPlusPt",   &muPlusPt, "muPlusPt/F");
+  DiMuonTree_allsign->Branch("muMinusPt",  &muMinusPt, "muMinusPt/F");
+  DiMuonTree_allsign->Branch("muPlusEta",  &muPlusEta, "muPlusEta/F");
+  DiMuonTree_allsign->Branch("muMinusEta", &muMinusEta, "muMinusEta/F");
+  DiMuonTree_allsign->Branch("muPlusPhi",  &muPlusPhi, "muPlusPhi/F");
+  DiMuonTree_allsign->Branch("muMinusPhi", &muMinusPhi, "muMinusPhi/F");
   
    if(addExtraCentrality)
     {
-      UpsilonTree_allsign->Branch("Npix",&Npix,"Npix/I");
-      UpsilonTree_allsign->Branch("NpixelTracks",&NpixelTracks,"NpixelTracks/I");
-      UpsilonTree_allsign->Branch("Ntracks", &Ntracks, "Ntracks/I");
-      UpsilonTree_allsign->Branch("SumET_HF",&SumET_HF,"SumET_HF/F");
-      UpsilonTree_allsign->Branch("SumET_HFplus",&SumET_HFplus,"SumET_HFplus/F");
-      UpsilonTree_allsign->Branch("SumET_HFminus",&SumET_HFminus,"SumET_HFminus/F");
-      UpsilonTree_allsign->Branch("SumET_HFplusEta4",&SumET_HFplusEta4,"SumET_HFplusEta4/F");
-      UpsilonTree_allsign->Branch("SumET_HFminusEta4",&SumET_HFminusEta4,"SumET_HFminusEta4/F");
-      UpsilonTree_allsign->Branch("SumET_ET",&SumET_ET,"SumET_ET/F");
-      UpsilonTree_allsign->Branch("SumET_EE",&SumET_EE,"SumET_EE/F");
-      UpsilonTree_allsign->Branch("SumET_EB",&SumET_EB,"SumET_EB/F");
-      UpsilonTree_allsign->Branch("SumET_EEplus",&SumET_EEplus,"SumET_EEplus/F");
-      UpsilonTree_allsign->Branch("SumET_EEminus",&SumET_EEminus,"SumET_EEminus/F");
-      UpsilonTree_allsign->Branch("SumET_ZDC",&SumET_ZDC,"SumET_ZDC/F");
-      UpsilonTree_allsign->Branch("SumET_ZDCplus",&SumET_ZDCplus,"SumET_ZDCplus/F");
-      UpsilonTree_allsign->Branch("SumET_ZDCminus",&SumET_ZDCminus,"SumET_ZDCminus/F");
+      DiMuonTree_allsign->Branch("Npix",&Npix,"Npix/I");
+      DiMuonTree_allsign->Branch("NpixelTracks",&NpixelTracks,"NpixelTracks/I");
+      DiMuonTree_allsign->Branch("Ntracks", &Ntracks, "Ntracks/I");
+      DiMuonTree_allsign->Branch("SumET_HF",&SumET_HF,"SumET_HF/F");
+      DiMuonTree_allsign->Branch("SumET_HFplus",&SumET_HFplus,"SumET_HFplus/F");
+      DiMuonTree_allsign->Branch("SumET_HFminus",&SumET_HFminus,"SumET_HFminus/F");
+      DiMuonTree_allsign->Branch("SumET_HFplusEta4",&SumET_HFplusEta4,"SumET_HFplusEta4/F");
+      DiMuonTree_allsign->Branch("SumET_HFminusEta4",&SumET_HFminusEta4,"SumET_HFminusEta4/F");
+      DiMuonTree_allsign->Branch("SumET_ET",&SumET_ET,"SumET_ET/F");
+      DiMuonTree_allsign->Branch("SumET_EE",&SumET_EE,"SumET_EE/F");
+      DiMuonTree_allsign->Branch("SumET_EB",&SumET_EB,"SumET_EB/F");
+      DiMuonTree_allsign->Branch("SumET_EEplus",&SumET_EEplus,"SumET_EEplus/F");
+      DiMuonTree_allsign->Branch("SumET_EEminus",&SumET_EEminus,"SumET_EEminus/F");
+      DiMuonTree_allsign->Branch("SumET_ZDC",&SumET_ZDC,"SumET_ZDC/F");
+      DiMuonTree_allsign->Branch("SumET_ZDCplus",&SumET_ZDCplus,"SumET_ZDCplus/F");
+      DiMuonTree_allsign->Branch("SumET_ZDCminus",&SumET_ZDCminus,"SumET_ZDCminus/F");
     }
 
-  UpsilonTree_trkRot->Branch("Centrality", &Centrality,    "Centrality/I");
-  UpsilonTree_trkRot->Branch("HLTriggers", &HLTriggers,    "HLTriggers/I");
-  UpsilonTree_trkRot->Branch("QQtrig",     &QQtrig,    "QQtrig/I");
-  UpsilonTree_trkRot->Branch("QQsign",     &QQsign,    "QQsign/I");
-  UpsilonTree_trkRot->Branch("QQTrkDr03",     &QQTrkDr03,     "QQTrkDr03/I");
-  UpsilonTree_trkRot->Branch("QQTrkDr04",     &QQTrkDr04,     "QQTrkDr04/I");
-  UpsilonTree_trkRot->Branch("QQTrkDr05",     &QQTrkDr05,     "QQTrkDr05/I");
-  UpsilonTree_trkRot->Branch("QQTrkPt04",     &QQTrkPt04,     "QQTrkPt04/I");
-  UpsilonTree_trkRot->Branch("QQTrkPt03",     &QQTrkPt03,     "QQTrkPt03/I");
-  UpsilonTree_trkRot->Branch("QQTrkPt02",     &QQTrkPt02,     "QQTrkPt02/I");
+  DiMuonTree_trkRot->Branch("Centrality", &Centrality,    "Centrality/I");
+  DiMuonTree_trkRot->Branch("HLTriggers", &HLTriggers,    "HLTriggers/I");
+  DiMuonTree_trkRot->Branch("QQtrig",     &QQtrig,    "QQtrig/I");
+  DiMuonTree_trkRot->Branch("QQsign",     &QQsign,    "QQsign/I");
+  DiMuonTree_trkRot->Branch("QQTrkDr03",     &QQTrkDr03,     "QQTrkDr03/I");
+  DiMuonTree_trkRot->Branch("QQTrkDr04",     &QQTrkDr04,     "QQTrkDr04/I");
+  DiMuonTree_trkRot->Branch("QQTrkDr05",     &QQTrkDr05,     "QQTrkDr05/I");
+  DiMuonTree_trkRot->Branch("QQTrkPt04",     &QQTrkPt04,     "QQTrkPt04/I");
+  DiMuonTree_trkRot->Branch("QQTrkPt03",     &QQTrkPt03,     "QQTrkPt03/I");
+  DiMuonTree_trkRot->Branch("QQTrkPt02",     &QQTrkPt02,     "QQTrkPt02/I");
 
-  UpsilonTree_trkRot->Branch("weight",     &weight,    "weight/F");
-  UpsilonTree_trkRot->Branch("weight2",    &weight2,    "weight2/F");
-  UpsilonTree_trkRot->Branch("vProb",      &vProb,     "vProb/F");
-  UpsilonTree_trkRot->Branch("eventNb",    &eventNb,     "eventNb/I");
-  UpsilonTree_trkRot->Branch("runNb",      &runNb,     "runNb/I");
-  UpsilonTree_trkRot->Branch("invariantMass", &invariantMass, "invariantMass/F");
-  UpsilonTree_trkRot->Branch("upsPt",      &upsPt, "upsPt/F");
-  UpsilonTree_trkRot->Branch("upsEta",     &upsEta, "upsEta/F");
-  UpsilonTree_trkRot->Branch("upsPhi",     &upsPhi, "upsPhi/F");
-  UpsilonTree_trkRot->Branch("upsRapidity",&upsRapidity, "upsRapidity/F");
-  UpsilonTree_trkRot->Branch("muPlusPt",   &muPlusPt, "muPlusPt/F");
-  UpsilonTree_trkRot->Branch("muMinusPt",  &muMinusPt, "muMinusPt/F");
-  UpsilonTree_trkRot->Branch("muPlusEta",  &muPlusEta, "muPlusEta/F");
-  UpsilonTree_trkRot->Branch("muMinusEta", &muMinusEta, "muMinusEta/F");
-  UpsilonTree_trkRot->Branch("muPlusPhi",  &muPlusPhi, "muPlusPhi/F");
-  UpsilonTree_trkRot->Branch("muMinusPhi", &muMinusPhi, "muMinusPhi/F");
+  DiMuonTree_trkRot->Branch("weight",     &weight,    "weight/F");
+  DiMuonTree_trkRot->Branch("weight2",    &weight2,    "weight2/F");
+  DiMuonTree_trkRot->Branch("vProb",      &vProb,     "vProb/F");
+  DiMuonTree_trkRot->Branch("eventNb",    &eventNb,     "eventNb/I");
+  DiMuonTree_trkRot->Branch("runNb",      &runNb,     "runNb/I");
+  DiMuonTree_trkRot->Branch("invariantMass", &invariantMass, "invariantMass/F");
+  DiMuonTree_trkRot->Branch("dimuPt",      &dimuPt, "dimuPt/F");
+  DiMuonTree_trkRot->Branch("dimuEta",     &dimuEta, "dimuEta/F");
+  DiMuonTree_trkRot->Branch("dimuPhi",     &dimuPhi, "dimuPhi/F");
+  DiMuonTree_trkRot->Branch("dimuRapidity",&dimuRapidity, "dimuRapidity/F");
+  DiMuonTree_trkRot->Branch("muPlusPt",   &muPlusPt, "muPlusPt/F");
+  DiMuonTree_trkRot->Branch("muMinusPt",  &muMinusPt, "muMinusPt/F");
+  DiMuonTree_trkRot->Branch("muPlusEta",  &muPlusEta, "muPlusEta/F");
+  DiMuonTree_trkRot->Branch("muMinusEta", &muMinusEta, "muMinusEta/F");
+  DiMuonTree_trkRot->Branch("muPlusPhi",  &muPlusPhi, "muPlusPhi/F");
+  DiMuonTree_trkRot->Branch("muMinusPhi", &muMinusPhi, "muMinusPhi/F");
   if(addExtraCentrality)
     {
-      UpsilonTree_trkRot->Branch("Npix",&Npix,"Npix/I");
-      UpsilonTree_trkRot->Branch("NpixelTracks",&NpixelTracks,"NpixelTracks/I");
-      UpsilonTree_trkRot->Branch("Ntracks", &Ntracks, "Ntracks/I");
-      UpsilonTree_trkRot->Branch("SumET_HF",&SumET_HF,"SumET_HF/F");
-      UpsilonTree_trkRot->Branch("SumET_HFplus",&SumET_HFplus,"SumET_HFplus/F");
-      UpsilonTree_trkRot->Branch("SumET_HFminus",&SumET_HFminus,"SumET_HFminus/F");
-      UpsilonTree_trkRot->Branch("SumET_HFplusEta4",&SumET_HFplusEta4,"SumET_HFplusEta4/F");
-      UpsilonTree_trkRot->Branch("SumET_HFminusEta4",&SumET_HFminusEta4,"SumET_HFminusEta4/F");
-      UpsilonTree_trkRot->Branch("SumET_ET",&SumET_ET,"SumET_ET/F");
-      UpsilonTree_trkRot->Branch("SumET_EE",&SumET_EE,"SumET_EE/F");
-      UpsilonTree_trkRot->Branch("SumET_EB",&SumET_EB,"SumET_EB/F");
-      UpsilonTree_trkRot->Branch("SumET_EEplus",&SumET_EEplus,"SumET_EEplus/F");
-      UpsilonTree_trkRot->Branch("SumET_EEminus",&SumET_EEminus,"SumET_EEminus/F");
-      UpsilonTree_trkRot->Branch("SumET_ZDC",&SumET_ZDC,"SumET_ZDC/F");
-      UpsilonTree_trkRot->Branch("SumET_ZDCplus",&SumET_ZDCplus,"SumET_ZDCplus/F");
-      UpsilonTree_trkRot->Branch("SumET_ZDCminus",&SumET_ZDCminus,"SumET_ZDCminus/F");
+      DiMuonTree_trkRot->Branch("Npix",&Npix,"Npix/I");
+      DiMuonTree_trkRot->Branch("NpixelTracks",&NpixelTracks,"NpixelTracks/I");
+      DiMuonTree_trkRot->Branch("Ntracks", &Ntracks, "Ntracks/I");
+      DiMuonTree_trkRot->Branch("SumET_HF",&SumET_HF,"SumET_HF/F");
+      DiMuonTree_trkRot->Branch("SumET_HFplus",&SumET_HFplus,"SumET_HFplus/F");
+      DiMuonTree_trkRot->Branch("SumET_HFminus",&SumET_HFminus,"SumET_HFminus/F");
+      DiMuonTree_trkRot->Branch("SumET_HFplusEta4",&SumET_HFplusEta4,"SumET_HFplusEta4/F");
+      DiMuonTree_trkRot->Branch("SumET_HFminusEta4",&SumET_HFminusEta4,"SumET_HFminusEta4/F");
+      DiMuonTree_trkRot->Branch("SumET_ET",&SumET_ET,"SumET_ET/F");
+      DiMuonTree_trkRot->Branch("SumET_EE",&SumET_EE,"SumET_EE/F");
+      DiMuonTree_trkRot->Branch("SumET_EB",&SumET_EB,"SumET_EB/F");
+      DiMuonTree_trkRot->Branch("SumET_EEplus",&SumET_EEplus,"SumET_EEplus/F");
+      DiMuonTree_trkRot->Branch("SumET_EEminus",&SumET_EEminus,"SumET_EEminus/F");
+      DiMuonTree_trkRot->Branch("SumET_ZDC",&SumET_ZDC,"SumET_ZDC/F");
+      DiMuonTree_trkRot->Branch("SumET_ZDCplus",&SumET_ZDCplus,"SumET_ZDCplus/F");
+      DiMuonTree_trkRot->Branch("SumET_ZDCminus",&SumET_ZDCminus,"SumET_ZDCminus/F");
     }
 
 
@@ -698,10 +698,10 @@ void MakeTree_2015(const char* inputOniaTree = "/afs/cern.ch/user/e/echapon/work
      TLorentzVector *Reco_QQ_mupl = (TLorentzVector *) Reco_QQ_mupl_4mom->At(iQQ);
      TLorentzVector *Reco_QQ_mumi = (TLorentzVector *) Reco_QQ_mumi_4mom->At(iQQ);
      invariantMass = Reco_QQ->M();
-     upsPt         = Reco_QQ->Pt();
-     upsEta        = Reco_QQ->Eta();
-     upsPhi        = Reco_QQ->Phi();
-     upsRapidity   = Reco_QQ->Rapidity();
+     dimuPt         = Reco_QQ->Pt();
+     dimuEta        = Reco_QQ->Eta();
+     dimuPhi        = Reco_QQ->Phi();
+     dimuRapidity   = Reco_QQ->Rapidity();
      
      // single muon variables
      muMinusPt     = Reco_QQ_mumi->Pt();
@@ -774,10 +774,10 @@ void MakeTree_2015(const char* inputOniaTree = "/afs/cern.ch/user/e/echapon/work
      if (bProcess)
        {
          if (i%1000==0) 	      cout << i << endl;
-         UpsilonTree_allsign->Fill();// all sign and all mass
+         DiMuonTree_allsign->Fill();// all sign and all mass
          if (QQsign==0) // opposite sign
       {
-        UpsilonTree->Fill();// OS and all mass
+        DiMuonTree->Fill();// OS and all mass
         if (Reco_QQ->M()>mass_min && Reco_QQ->M()<mass_max) 
           {
             h_QQ_mass->Fill(Reco_QQ->M());// all upsilons in 7->14
@@ -810,11 +810,11 @@ void MakeTree_2015(const char* inputOniaTree = "/afs/cern.ch/user/e/echapon/work
      dimuon = mu1 + mu2;
      
      invariantMass = dimuon.M();
-     upsPt         = dimuon.Pt();
-     upsEta        = dimuon.Eta();
-     upsRapidity   = dimuon.Rapidity();
+     dimuPt         = dimuon.Pt();
+     dimuEta        = dimuon.Eta();
+     dimuRapidity   = dimuon.Rapidity();
 
-     UpsilonTree_trkRot->Fill();
+     DiMuonTree_trkRot->Fill();
      
    }// if bProcess
       }// for each QQ pair		
