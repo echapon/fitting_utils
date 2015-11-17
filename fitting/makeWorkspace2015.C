@@ -1,23 +1,12 @@
+#include "allFunctions.h"
+
 using namespace RooFit;
 
-void makeWorkspace2015(RooWorkspace& ws, int ChooseSample,float muonEtaMin, float muonEtaMax, float muonPtMin, float muonPtMax, float dimuRapMin, float dimuRapMax, float dimuPtMin,float dimuPtMax, int dimuCentralityStart, int dimuCentralityEnd ){
-   double mass_l =  7.0;
-   double mass_h = 14.0;
+void makeWorkspace2015(RooWorkspace& ws, const char* filename,float mass_l, float mass_h, float muonEtaMin, float muonEtaMax, float muonPtMin, float dimuRapMin, float dimuRapMax, float dimuPtMin,float dimuPtMax, int dimuCentralityStart, int dimuCentralityEnd ){
+   double binw=0.05;
  
   cout<< "You're in makeWorkspace2015!" << endl;
-  std::string finput;
-  switch (ChooseSample) 
-    {
-    case 1: // test
-      finput   = "/afs/cern.ch/user/e/echapon/workspace/public/RunPrep2015/fitting_utils/dimuonTree_MCtest_upsi1S_5TeV_3.8T_RunMCtest_trigBit2_allTriggers1.root";
-      mass_l = 8.5;
-      mass_h = 11.5;
-      binw=0.05;
-      break;
-    default:
-      cout<<"You don't know what you are doing! Pick one of the available datasets in the choseSampleCases[] array"<<endl;
-      break;
-    }
+  std::string finput(filename);
   cout << finput << endl;
   //  TFile f(finput,"read");
   TFile *f = new TFile(finput.c_str());
@@ -42,7 +31,13 @@ void makeWorkspace2015(RooWorkspace& ws, int ChooseSample,float muonEtaMin, floa
   data0->Print();
   // //  }
   // //data = ( RooDataSet*) data0->reduce(EventRange(0,100000));//,Cut("invariantMass<11"));
-  TString cut_ap(Form("(%d<=Centrality && Centrality<%d) && (%.2f<muPlusEta && muPlusEta < %.2f) && (%.2f<muMinusEta && muMinusEta < %.2f) && (%.2f<dimuPt && dimuPt<%.2f) &&(abs(dimuRapidity)>%.2f && abs(dimuRapidity)<%.2f)  &&((muPlusPt > %.2f && muMinusPt > %.2f) || (muPlusPt > %.2f && muMinusPt > %.2f))",dimuCentralityStart,dimuCentralityEnd,muonEtaMin,muonEtaMax,muonEtaMin,muonEtaMax,dimuPtMin,dimuPtMax,dimuRapMin,dimuRapMax,muonPtMin,muonPtMax,muonPtMax,muonPtMin));
+  TString cut_ap(Form("(%d<=Centrality && Centrality<%d) &&" 
+           "(%.2f<muPlusEta && muPlusEta < %.2f) &&" 
+           "(%.2f<muMinusEta && muMinusEta < %.2f) &&" 
+           "(%.2f<dimuPt && dimuPt<%.2f) &&"
+           "(abs(dimuRapidity)>%.2f && abs(dimuRapidity)<%.2f)  &&"
+           "(muPlusPt > %.2f && muMinusPt > %.2f)",
+           dimuCentralityStart,dimuCentralityEnd,muonEtaMin,muonEtaMax,muonEtaMin,muonEtaMax,dimuPtMin,dimuPtMax,dimuRapMin,dimuRapMax,muonPtMin,muonPtMin));
   cout << cut_ap << endl;
   data =  ( RooDataSet*) data0->reduce(Cut(cut_ap));
   ws.import(*data);

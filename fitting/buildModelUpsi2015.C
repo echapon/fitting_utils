@@ -1,6 +1,4 @@
 #include "allFunctions.h"
-#include "RooAbsPdf.h"
-#include "RooCBShape.h"
 
 using namespace RooFit;
 

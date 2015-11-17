@@ -1,6 +1,26 @@
 #ifndef allFunctions_h
 #define allFunctions_h
 
+#include "TFile.h"
+#include "TTree.h"
+#include "TROOT.h"
+#include "RooWorkspace.h"
+#include "RooAbsPdf.h"
+#include "RooCBShape.h"
+#include "RooRealVar.h"
+#include "RooFormulaVar.h"
+#include "RooGaussian.h"
+#include "RooWorkspace.h"
+#include "RooChebychev.h"
+#include "RooGenericPdf.h"
+#include "RooDataSet.h"
+#include "RooFitResult.h"
+#include "RooPlot.h"
+#include "RooArgSet.h"
+#include "RooAddPdf.h"
+#include "RooConstVar.h"
+#include "RooArgList.h"
+
 #include <iostream>
 const double mass_l =  7.5;
 const double mass_h = 14.0;
