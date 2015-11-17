@@ -9,7 +9,7 @@ void buildModelJpsi2015(RooWorkspace& w, int signalModel, int bkgdModel){
    int nt=100000;
    // cout << "you're building a model for the quarkonium resonance of mass = "<< M1S <<" GeV/c^{2},"endl;
    RooRealVar *nsig1f   = new RooRealVar("N_{J/#psi}","nsig1",0,nt*10);
-   RooRealVar* mass       = new RooRealVar("invariantMass","#mu#mu mass",mass_l,mass_h,"GeV/c^{2}");
+   RooRealVar* mass       = (RooRealVar*) w.var("invariantMass");
 
    RooRealVar  *mean = new RooRealVar("m_{J/#psi}","J/#psi mean",MJpsi,MJpsi-0.2,MJpsi+0.2);
    // scale mean and resolution by mass ratio

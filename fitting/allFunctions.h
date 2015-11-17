@@ -22,8 +22,6 @@
 #include "RooArgList.h"
 
 #include <iostream>
-const double mass_l =  7.5;
-const double mass_h = 14.0;
 const double binw   = 0.1;    //bin width of the histogram
 const double MJpsi = 3.096;
 const double Mpsi2S = 3.686;

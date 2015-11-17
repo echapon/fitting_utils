@@ -4,8 +4,8 @@
 #include "buildModelUpsi2015.C"
 #include "buildModelJpsi2015.C"
 
-double massmin = 7;
-double massmax = 11.5;
+double massmin = 7; // actually modified later depending on oniamode
+double massmax = 11.5; // actually modified later depending on oniamode
 double singlemuon_ptmin = 3;
 double singlemuon_etamin = -2.4;
 double singlemuon_etamax = 2.4;
@@ -29,6 +29,21 @@ void fit2015(const char *filename="/afs/cern.ch/user/e/echapon/workspace/public/
       colltag = "pp";
    }
 
+   TString nsigname = "";
+   if (oniamode==1) {
+      nsigname = "N_{J/#psi}";
+      massmin = 2.5;
+      massmax = 4;
+   }
+   else if (oniamode==2) {
+      nsigname = "N_{ #varUpsilon(1S)}";
+      massmin = 7;
+      massmax = 14;
+   }
+   else {cout << "Error, oniamode should be 1 (jpsi) or 2 (upsilon)" << endl; return;}
+
+   cout << massmin << " " << massmax << endl;
+
    RooWorkspace myws;
    makeWorkspace2015(myws, 
          filename,
@@ -41,7 +56,6 @@ void fit2015(const char *filename="/afs/cern.ch/user/e/echapon/workspace/public/
 
    if (oniamode==1) buildModelJpsi2015(myws, 2, 3);
    else if (oniamode==2) buildModelUpsi2015(myws, 2, 3);
-   else {cout << "Error, oniamode should be 1 (jpsi) or 2 (upsilon)" << endl; return;}
 
    RooRealVar* mass =(RooRealVar*) myws.var("invariantMass"); //
    RooDataSet* data0_fit =(RooDataSet*) myws.data("data");
@@ -51,16 +65,12 @@ void fit2015(const char *filename="/afs/cern.ch/user/e/echapon/workspace/public/
    Double_t baseNll = fitObject->minNll();
    // RooMinuit m(*nll);
 
-   TString nsigname = "";
-   if (oniamode==1) nsigname = "N_{J/#psi}";
-   else if (oniamode==2) nsigname = "N_{ #varUpsilon(1S)}";
-
    RooRealVar *nsig1f   =(RooRealVar*) myws.var(nsigname);
 
    RooArgSet allvars = myws.allVars();
    int npars= allvars.getSize() ;
-   int nbins = ceil((mass_h-mass_l)/binw); // all of which are 'globally' defined in the .h header
-   RooPlot* frame = mass->frame(Bins(nbins),Range(mass_l,mass_h));  
+   int nbins = 40;//ceil((massmax-massmin)/binw);
+   RooPlot* frame = mass->frame(Bins(nbins),Range(massmin,massmax));  
    data0_fit->plotOn(frame);// data drawn first for pdf object to pick the proper normalisation
    pdf->plotOn(frame,Name("thePdf"));
 
