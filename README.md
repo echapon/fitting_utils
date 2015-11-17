@@ -1,3 +1,6 @@
+# DEPRECATED REPOSITORY
+please move to https://github.com/CMS-HIN-dilepton/Dimuons/tree/master/Basic/fitting
+
 # fitting_utils
 Utilities related to fitting onia (from HIN-15-001)
 
