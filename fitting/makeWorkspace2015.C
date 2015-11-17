@@ -1,5 +1,7 @@
 #include "allFunctions.h"
 
+#include "myTreeClass.C"
+
 using namespace RooFit;
 
 void makeWorkspace2015(RooWorkspace& ws, const char* filename,float mass_l, float mass_h, float muonEtaMin, float muonEtaMax, float muonPtMin, float dimuRapMin, float dimuRapMax, float dimuPtMin,float dimuPtMax, int dimuCentralityStart, int dimuCentralityEnd ){
@@ -10,7 +12,7 @@ void makeWorkspace2015(RooWorkspace& ws, const char* filename,float mass_l, floa
   cout << finput << endl;
   //  TFile f(finput,"read");
   TFile *f = new TFile(finput.c_str());
-  TTree* theTree       = (TTree*)gROOT->FindObject("DiMuonTree"); // OS --- all mass
+  TTree* theTree       = (TTree*)gROOT->FindObject("myTree"); // OS --- all mass
   cout << theTree << endl;
   //  //RooWorkspace* ws = new RooWorkspace("ws","DiMuon Mass Fitting");
   //ws.var("invariantMass");	
@@ -27,10 +29,80 @@ void makeWorkspace2015(RooWorkspace& ws, const char* filename,float mass_l, floa
   RooRealVar* muMinusEta = new RooRealVar("muMinusEta","muMinusEta",muonEtaMin,muonEtaMax);
   RooDataSet* data0, *data;
   RooArgSet cols(*mass,*dimuPt,*dimuRapidity,*Centrality,*muPlusPt,*muMinusPt,*muPlusEta,*muMinusEta);
-  data0 = new RooDataSet("data","data",theTree,cols); 
+  data0 = new RooDataSet("data","data",cols); 
+
+  // import the tree to the RooDataSet
+  UInt_t          runNb;
+  Int_t           centrality;
+  Int_t           HLTriggers;
+  Int_t           Reco_QQ_size;
+  Int_t           Reco_QQ_sign[99];   //[Reco_QQ_size]
+  TClonesArray    *Reco_QQ_4mom;
+  TClonesArray    *Reco_QQ_mupl_4mom;
+  TClonesArray    *Reco_QQ_mumi_4mom;
+  Int_t           Reco_QQ_trig[99];   //[Reco_QQ_size]
+  Float_t         Reco_QQ_VtxProb[99];   //[Reco_QQ_size]
+
+  TBranch        *b_runNb;   //!
+  TBranch        *b_centrality;   //!
+  TBranch        *b_HLTriggers;   //!
+  TBranch        *b_Reco_QQ_size;   //!
+  TBranch        *b_Reco_QQ_sign;   //!
+  TBranch        *b_Reco_QQ_4mom;   //!
+  TBranch        *b_Reco_QQ_mupl_4mom;   //!
+  TBranch        *b_Reco_QQ_mumi_4mom;   //!
+  TBranch        *b_Reco_QQ_trig;   //!
+  TBranch        *b_Reco_QQ_VtxProb;   //!
+
+  Reco_QQ_4mom = 0;
+  Reco_QQ_mupl_4mom = 0;
+  Reco_QQ_mumi_4mom = 0;
+  theTree->SetBranchAddress("runNb", &runNb, &b_runNb);
+  theTree->SetBranchAddress("Centrality", &centrality, &b_centrality);
+  theTree->SetBranchAddress("HLTriggers", &HLTriggers, &b_HLTriggers);
+  theTree->SetBranchAddress("Reco_QQ_size", &Reco_QQ_size, &b_Reco_QQ_size);
+  theTree->SetBranchAddress("Reco_QQ_sign", Reco_QQ_sign, &b_Reco_QQ_sign);
+  theTree->GetBranch("Reco_QQ_4mom")->SetAutoDelete(kFALSE);
+  theTree->SetBranchAddress("Reco_QQ_4mom", &Reco_QQ_4mom, &b_Reco_QQ_4mom);
+  theTree->GetBranch("Reco_QQ_mupl_4mom")->SetAutoDelete(kFALSE);
+  theTree->SetBranchAddress("Reco_QQ_mupl_4mom", &Reco_QQ_mupl_4mom, &b_Reco_QQ_mupl_4mom);
+  theTree->GetBranch("Reco_QQ_mumi_4mom")->SetAutoDelete(kFALSE);
+  theTree->SetBranchAddress("Reco_QQ_mumi_4mom", &Reco_QQ_mumi_4mom, &b_Reco_QQ_mumi_4mom);
+  theTree->SetBranchAddress("Reco_QQ_trig", Reco_QQ_trig, &b_Reco_QQ_trig);
+  theTree->SetBranchAddress("Reco_QQ_VtxProb", Reco_QQ_VtxProb, &b_Reco_QQ_VtxProb);
+
+   if (theTree == 0) return;
+
+   Long64_t nentries = theTree->GetEntriesFast();
+
+   Long64_t nbytes = 0, nb = 0;
+   for (Long64_t jentry=0; jentry<nentries;jentry++) {
+      // Long64_t ientry = LoadTree(jentry);
+      // if (ientry < 0) break;
+      nb = theTree->GetEntry(jentry);   nbytes += nb;
+      // if (Cut(ientry) < 0) continue;
+
+      for (unsigned int i=0; i<Reco_QQ_size; i++) {
+         TLorentzVector *qq4mom = (TLorentzVector*) Reco_QQ_4mom->At(i);
+         TLorentzVector *qq4mupl = (TLorentzVector*) Reco_QQ_mupl_4mom->At(i);
+         TLorentzVector *qq4mumi = (TLorentzVector*) Reco_QQ_mumi_4mom->At(i);
+         mass->setVal(qq4mom->M());
+         dimuPt->setVal(qq4mom->Pt());
+         dimuRapidity->setVal(qq4mom->Rapidity());
+         vProb->setVal(Reco_QQ_VtxProb[i]);
+         QQsign->setVal(Reco_QQ_sign[i]);
+         Centrality->setVal(centrality);
+         muPlusPt->setVal(qq4mupl->Pt());
+         muMinusPt->setVal(qq4mumi->Pt());
+         muPlusEta->setVal(qq4mupl->Eta());
+         muMinusEta->setVal(qq4mumi->Eta());
+
+         data0->add(cols);
+      }
+   }
+
+
   data0->Print();
-  // //  }
-  // //data = ( RooDataSet*) data0->reduce(EventRange(0,100000));//,Cut("invariantMass<11"));
   TString cut_ap(Form("(%d<=Centrality && Centrality<%d) &&" 
            "(%.2f<muPlusEta && muPlusEta < %.2f) &&" 
            "(%.2f<muMinusEta && muMinusEta < %.2f) &&" 
