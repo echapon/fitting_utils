@@ -44,7 +44,7 @@ void oniaTreeMassCut(const char *filein,int oniamode=2) {
       massmax = 4;
    }
    else if (oniamode==2) {
-      signame = "Y1S";
+      signame = "Upsilon";
       massmin = 7;
       massmax = 14;
    }
