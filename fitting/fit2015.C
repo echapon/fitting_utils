@@ -2,6 +2,7 @@
 
 #include "makeWorkspace2015.C"
 #include "buildModelUpsi2015.C"
+#include "buildModelJpsi2015.C"
 
 double massmin = 7;
 double massmax = 11.5;
@@ -16,9 +17,10 @@ int centralitymin = 0;
 int centralitymax = 200;
 
 
-void fit2015(const char *filename="/afs/cern.ch/user/e/echapon/workspace/public/RunPrep2015/fitting_utils/dimuonTree_MCtest_upsi1S_5TeV_3.8T_RunMCtest_trigBit2_allTriggers1.root", bool ispbpb=false, int oniamode=2) {
+void fit2015(const char *filename="/afs/cern.ch/user/e/echapon/workspace/public/RunPrep2015/fitting_utils/dimuonTree_MCtest_upsi1S_5TeV_3.8T_RunMCtest_trigBit2_allTriggers1.root", bool ispbpb=false, int oniamode=2, bool isdata=false) {
    // ispbpb = false for pp, true for PbPb
    // oniamode = 1 for J/psi, 2 for upsilon
+   // isdata = false for MC, true for data
 
    TString colltag = "PbPb";
 
@@ -37,7 +39,9 @@ void fit2015(const char *filename="/afs/cern.ch/user/e/echapon/workspace/public/
          dimu_ptmin,dimu_ptmax, 
          centralitymin,centralitymax );
 
-   buildModelUpsi2015(myws, 2, 3);
+   if (oniamode==1) buildModelJpsi2015(myws, 2, 3);
+   else if (oniamode==2) buildModelUpsi2015(myws, 2, 3);
+   else {cout << "Error, oniamode should be 1 (jpsi) or 2 (upsilon)" << endl; return;}
 
    RooRealVar* mass =(RooRealVar*) myws.var("invariantMass"); //
    RooDataSet* data0_fit =(RooDataSet*) myws.data("data");
@@ -46,7 +50,12 @@ void fit2015(const char *filename="/afs/cern.ch/user/e/echapon/workspace/public/
    pdf->Print();
    Double_t baseNll = fitObject->minNll();
    // RooMinuit m(*nll);
-   RooRealVar *nsig1f   =(RooRealVar*) myws.var("N_{ #varUpsilon(1S)}");
+
+   TString nsigname = "";
+   if (oniamode==1) nsigname = "N_{J/#psi}";
+   else if (oniamode==2) nsigname = "N_{ #varUpsilon(1S)}";
+
+   RooRealVar *nsig1f   =(RooRealVar*) myws.var(nsigname);
 
    RooArgSet allvars = myws.allVars();
    int npars= allvars.getSize() ;

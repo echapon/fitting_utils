@@ -11,7 +11,7 @@ void buildModelJpsi2015(RooWorkspace& w, int signalModel, int bkgdModel){
    RooRealVar *nsig1f   = new RooRealVar("N_{J/#psi}","nsig1",0,nt*10);
    RooRealVar* mass       = new RooRealVar("invariantMass","#mu#mu mass",mass_l,mass_h,"GeV/c^{2}");
 
-   RooRealVar  *mean = new RooRealVar("m_{J/#psi}","J/#psi mean",M,M-0.2,M+0.2);
+   RooRealVar  *mean = new RooRealVar("m_{J/#psi}","J/#psi mean",MJpsi,MJpsi-0.2,MJpsi+0.2);
    // scale mean and resolution by mass ratio
    RooFormulaVar *mean1 = new RooFormulaVar("mean1","@0",RooArgList(*mean));
 
